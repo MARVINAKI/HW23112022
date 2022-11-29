@@ -6,17 +6,50 @@ import java.util.Objects;
 
 public class Car<A extends Driver> extends Transport implements Competing {
     private CarType carType;
+    private BodyTypePass bodyTypePass;
 
     public Car(String brand, String model, double engineVolume) {
         super(brand, model, engineVolume);
     }
 
+    public enum BodyTypePass {
+        SEDAN("Седан"),
+        HATCHBACK("Хетчбек"),
+        COUPE("Купе"),
+        UNIVERSAL("Универсал"),
+        SUV("Внедорожник"),
+        CROSSOVER("Кроссовер"),
+        PICKUP("Пикап"),
+        VAN("Фургон"),
+        MINIVAN("Минивэн");
+
+
+        private final String bodyTypePass;
+
+        // always 'private'
+        BodyTypePass(String bodyTypePass) {
+            this.bodyTypePass = bodyTypePass;
+        }
+
+        public final BodyTypePass findBodyType(String bodyTypePass) {
+            for (BodyTypePass type : values()) {
+                if (type.getBodyType().equalsIgnoreCase(bodyTypePass)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
+        public String getBodyType() {
+            return bodyTypePass;
+        }
+    }
 
     public static class CarType {
         private String carType;
 
         public CarType(String carType) {
-            setCarType(carType);
+            this.carType = carType == null || carType.trim().isEmpty() ? null : carType.trim().toLowerCase();
         }
 
         public final boolean checkPassCar() {
@@ -91,6 +124,16 @@ public class Car<A extends Driver> extends Transport implements Competing {
     public final void setCarType(CarType carType) {
         if (this.carType == null) {
             this.carType = carType;
+            this.bodyTypePass = null;
+        }
+    }
+
+    public final void setCarType(CarType carType, BodyTypePass bodyTypePass) {
+        if (this.carType == null) {
+            this.carType = carType;
+        }
+        if (this.bodyTypePass == null && getCarType().checkPassCar()) {
+            this.bodyTypePass = bodyTypePass;
         }
     }
 
@@ -99,7 +142,8 @@ public class Car<A extends Driver> extends Transport implements Competing {
         return "Автомобиль{" + getBrand() + "\\" +
                 getModel() + "\\" +
                 getEngineVolume() + "\\" +
-                carType + "}" ;
+                carType + "\\" +
+                bodyTypePass + "}";
     }
 
     @Override

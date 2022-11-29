@@ -5,19 +5,18 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<String> listType = new ArrayList<>();
         Car.CarType passengerCar = new Car.CarType("Легковой автомобиль");
         Car.CarType truck = new Car.CarType("Грузовой автомобиль");
         Car.CarType bus = new Car.CarType("Автобус");
 
         Car nissan = new Car("Nissan", "Terrano", 2);
-        nissan.setCarType(passengerCar);
+        nissan.setCarType(passengerCar, Car.BodyTypePass.CROSSOVER);
         Car chevrolet = new Car("Chevrolet", "Cruze", 1.8);
-        chevrolet.setCarType(passengerCar);
+        chevrolet.setCarType(passengerCar, Car.BodyTypePass.SEDAN);
         Car lada = new Car("LADA", "Priora", 1.6);
-        lada.setCarType(passengerCar);
+        lada.setCarType(passengerCar, Car.BodyTypePass.HATCHBACK);
         Car toyota = new Car("Toyota", "RAV4", 2);
-        toyota.setCarType(passengerCar);
+        toyota.setCarType(passengerCar, Car.BodyTypePass.CROSSOVER);
         Car man = new Car("MAN", "TGS 6x6", 12.4);
         man.setCarType(truck);
         Car volvo = new Car("Volvo", "FE II", 7.2);
@@ -49,24 +48,6 @@ public class Main {
         Driver kvyat = new Driver("Daniil Kvyat", "yEs", 15);
         kvyat.setDriversLicense(categoryB);
 
-        kostya.drive(nissan);
-        /*
-
-        C:\Users\Костя\.jdks\corretto-11.0.16.1\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.2\lib\idea_rt.jar=61718:C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.2\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\Костя\IdeaProjects\HW23112022\out\production\HW23112022 Main
-        Водитель ИВАНОВ КОНСТАНТИН АЛЕКСАНДРОВИЧ управляет автомобилем terrano (легковой автомобиль) и будет участвоать в заезде
-        ИВАНОВ КОНСТАНТИН АЛЕКСАНДРОВИЧ жмет педаль газа
-        nissan terrano начинает движение
-        ИВАНОВ КОНСТАНТИН АЛЕКСАНДРОВИЧ уверенно двигается вперед
-        ИВАНОВ КОНСТАНТИН АЛЕКСАНДРОВИЧ жмет педаль тормоза
-        nissan terrano остановка на пит-стоп
-        Осмотр легкового автомобиля...
-        ИВАНОВ КОНСТАНТИН АЛЕКСАНДРОВИЧ жмет педаль газа
-        nissan terrano начинает движение
-        Итоги первого круга
-        Лучшее время: Не фиксировалось
-        Максимальная скорость: Не фиксировалось
-
-        Process finished with exit code 0
-        */
+        System.out.println(nissan);
     }
 }
