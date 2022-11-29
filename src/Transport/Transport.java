@@ -13,6 +13,8 @@ public abstract class Transport {
         setEngineVolume(engineVolume);
     }
 
+    public abstract void printType();
+
     public void startMoving() {
         System.out.println(getBrand() + " " + getModel() + " начинает движение");
     }

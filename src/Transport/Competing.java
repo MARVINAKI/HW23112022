@@ -1,10 +1,13 @@
 package Transport;
 
 public interface Competing {
-    public abstract void pitStop();
 
-    public abstract void bestLapTime();
+    // always 'public abstract'
 
-    public abstract void maxSpeed();
+    void pitStop();
+
+    void bestLapTime();
+
+    void maxSpeed();
 
 }
