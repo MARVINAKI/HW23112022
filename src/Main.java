@@ -18,15 +18,15 @@ public class Main {
         Car toyota = new Car("Toyota", "RAV4", 2);
         toyota.setCarType(passengerCar, Car.BodyTypePass.CROSSOVER);
         Car man = new Car("MAN", "TGS 6x6", 12.4);
-        man.setCarType(truck);
+        man.setCarType(truck, Car.LoadCapacity.N3);
         Car volvo = new Car("Volvo", "FE II", 7.2);
-        volvo.setCarType(truck);
+        volvo.setCarType(truck, Car.LoadCapacity.N2);
         Car kamaz = new Car("KAMAZ", "65659", 12);
-        kamaz.setCarType(truck);
+        kamaz.setCarType(truck, Car.LoadCapacity.N3);
         Car maz = new Car("MAZ", "5440M9", 12.8);
-        maz.setCarType(truck);
+        maz.setCarType(truck, Car.LoadCapacity.N3);
         Car nefaz = new Car("Nefaz", "5299", 6.7);
-        nefaz.setCarType(bus);
+        nefaz.setCarType(bus, 50);
         Car gaz = new Car("GAZ", "A65R33-60", 2.7);
         gaz.setCarType(bus);
         Car volvoBus = new Car("Volvo", "9500", 7.7);
@@ -48,6 +48,6 @@ public class Main {
         Driver kvyat = new Driver("Daniil Kvyat", "yEs", 15);
         kvyat.setDriversLicense(categoryB);
 
-        System.out.println(nissan);
+        System.out.println(nefaz);
     }
 }
