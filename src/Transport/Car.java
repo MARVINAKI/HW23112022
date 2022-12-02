@@ -1,7 +1,6 @@
 package Transport;
 
 import java.sql.Driver;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Car<A extends Driver> extends Transport implements Competing {
@@ -48,58 +47,73 @@ public class Car<A extends Driver> extends Transport implements Competing {
             return null;
         }
 
-        public String getBodyType() {
-            return bodyTypePass;
+        private String getBodyType() {
+            return this.bodyTypePass;
         }
     }
 
     public enum LoadCapacity {
-        N1("до 3.5 тонн"),
-        N2("от 3.5 - до 12 тонн"),
-        N3("свыше 12 тонн");
+        N1(0, 3.5d),
+        N2(3.5d, 12d),
+        N3(12d, 100),
+        UNDEFINED(0, 0);
 
-        private final String loadCapacity;
+        private final double from;
+        private final double to;
 
-        LoadCapacity(String loadCapacity) {
-            this.loadCapacity = loadCapacity;
+        LoadCapacity(double from, double to) {
+            this.from = from;
+            this.to = to;
         }
 
-        public String getLoadCapacity() {
-            return loadCapacity;
+        public final LoadCapacity checkTruckCap(double loadCapacity) {
+            LoadCapacity cap = LoadCapacity.UNDEFINED;
+            for (LoadCapacity capacity : LoadCapacity.values()) {
+                if (loadCapacity > capacity.getFrom() && loadCapacity <= capacity.getTo()) {
+                    return capacity;
+                }
+            }
+            return cap;
+        }
+
+        private double getFrom() {
+            return from;
+        }
+
+        private double getTo() {
+            return to;
+        }
+
+        private void getLoadCapacity() {
+
         }
     }
 
     public enum PassCapacity {
-        VERYSMALL("до 10 мест"),
-        SMALL("до 25 мест"),
-        MEDIUM("от 25 до 55 мест"),
-        BIG("от 55 до 90"),
-        VERYBIG("от 90 до 120 мест");
+        VERY_SMALL(10),
+        SMALL(25),
+        MEDIUM(50),
+        BIG(80),
+        VERY_BIG(120),
+        UNDEFINED(0);
 
-        public final String passCapacity;
+        public final int to;
 
-        PassCapacity(String passCapacity) {
-            this.passCapacity = passCapacity;
+        PassCapacity(int to) {
+            this.to = to;
         }
 
-        public final PassCapacity findPassCapacity(int passCapacity) {
-            if (passCapacity > 0 && passCapacity <= 10) {
-                return VERYSMALL;
-            } else if (passCapacity <= 25) {
-                return SMALL;
-            } else if (passCapacity <= 55) {
-                return MEDIUM;
-            } else if (passCapacity <= 90) {
-                return BIG;
-            } else if (passCapacity <= 120) {
-                return VERYBIG;
-            } else {
-                return null;
+        public final PassCapacity checkCapacityTo(int capacityTo) {
+            for (PassCapacity capacity : PassCapacity.values()) {
+                if (capacityTo <= capacity.getTo()) {
+                    return capacity;
+                }
             }
+            return UNDEFINED;
         }
 
-        public final String getPassCapacity() {
-            return passCapacity;
+        private int getTo() {
+            return to;
         }
     }
 
@@ -183,47 +197,71 @@ public class Car<A extends Driver> extends Transport implements Competing {
     public final void setCarType(CarType carType) {
         if (this.carType == null) {
             this.carType = carType;
-            this.bodyTypePass = null;
         }
     }
 
     public final void setCarType(CarType carType, BodyTypePass bodyTypePass) {
-        if (this.carType == null) {
-            this.carType = carType;
-        }
-        if (this.bodyTypePass == null && getCarType().checkPassCar()) {
-            this.bodyTypePass = bodyTypePass;
-        }
+        this.carType = this.carType == null ? carType : this.carType;
+        this.bodyTypePass = this.bodyTypePass == null && getCarType().checkPassCar() ? bodyTypePass : this.bodyTypePass;
     }
 
     public final void setCarType(CarType carType, LoadCapacity loadCapacity) {
         if (this.carType == null) {
             this.carType = carType;
         }
-        if (this.bodyTypePass == null && getCarType().checkTruck()) {
+        if (this.bodyTypePass == null || getLoadCapacity() == LoadCapacity.UNDEFINED && getCarType().checkTruck()) {
             this.loadCapacity = loadCapacity;
         }
     }
 
-    public final void setCarType(CarType carType, int capacity) {
+    public final void setCarType(CarType carType, double loadCapacity) {
         if (this.carType == null) {
             this.carType = carType;
         }
-        if (capacity != 0 && this.passCapacity == null && getCarType().checkBus()) {
-            this.passCapacity = passCapacity.findPassCapacity(Math.abs(capacity));
+        if (this.carType.checkTruck()) {
+            this.loadCapacity = LoadCapacity.UNDEFINED;
+            this.loadCapacity = getLoadCapacity() == LoadCapacity.UNDEFINED && carType.checkTruck() ? this.loadCapacity.checkTruckCap(loadCapacity) : this.loadCapacity;
+        }
+    }
+
+    public final void setCarType(CarType carType, PassCapacity passCapacity) {
+        if (this.carType == null) {
+            this.carType = carType;
+        }
+        if (this.passCapacity == null || getPassCapacity() == PassCapacity.UNDEFINED && carType.checkBus()) {
+            this.passCapacity = passCapacity;
+        }
+
+    }
+
+    public final void setCarType(CarType carType, int capacityTo) {
+        if (this.carType == null) {
+            this.carType = carType;
+        }
+        if (getPassCapacity() == null || getPassCapacity() == PassCapacity.UNDEFINED && carType.checkBus()) {
+            this.passCapacity = PassCapacity.UNDEFINED;
+            this.passCapacity = this.passCapacity.checkCapacityTo(capacityTo);
         }
     }
 
     public final BodyTypePass getBodyTypePass() {
-        return bodyTypePass;
+        return this.bodyTypePass;
     }
 
     public final LoadCapacity getLoadCapacity() {
-        return loadCapacity;
+        return this.loadCapacity;
+    }
+
+    public void setLoadCapacity(LoadCapacity loadCapacity) {
+        this.loadCapacity = getLoadCapacity() == null ? loadCapacity : null;
+    }
+
+    public void setLoadCapacity(double loadCapacity) {
+        this.loadCapacity = getLoadCapacity() == LoadCapacity.UNDEFINED && carType.checkTruck() ? this.loadCapacity.checkTruckCap(loadCapacity) : this.loadCapacity;
     }
 
     public final PassCapacity getPassCapacity() {
-        return passCapacity;
+        return this.passCapacity;
     }
 
     @Override

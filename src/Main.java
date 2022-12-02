@@ -1,5 +1,6 @@
 import Transport.Car;
 import Transport.Transport;
+import Other.User;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class Main {
         Car toyota = new Car("Toyota", "RAV4", 2);
         toyota.setCarType(passengerCar, Car.BodyTypePass.CROSSOVER);
         Car man = new Car("MAN", "TGS 6x6", 12.4);
-        man.setCarType(truck, Car.LoadCapacity.N3);
+        man.setCarType(truck, 12d);
         Car volvo = new Car("Volvo", "FE II", 7.2);
         volvo.setCarType(truck, Car.LoadCapacity.N2);
         Car kamaz = new Car("KAMAZ", "65659", 12);
@@ -26,13 +27,13 @@ public class Main {
         Car maz = new Car("MAZ", "5440M9", 12.8);
         maz.setCarType(truck, Car.LoadCapacity.N3);
         Car nefaz = new Car("Nefaz", "5299", 6.7);
-        nefaz.setCarType(bus, 50);
+        nefaz.setCarType(bus, Car.PassCapacity.SMALL);
         Car gaz = new Car("GAZ", "A65R33-60", 2.7);
-        gaz.setCarType(bus);
+        gaz.setCarType(bus, Car.PassCapacity.MEDIUM);
         Car volvoBus = new Car("Volvo", "9500", 7.7);
-        volvoBus.setCarType(bus);
+        volvoBus.setCarType(bus, Car.PassCapacity.BIG);
         Car hyundai = new Car("Hyundai", "Universe", 12.3);
-        hyundai.setCarType(bus);
+        hyundai.setCarType(bus,120);
 
 
         Driver.DriversLicense categoryB = new Driver.DriversLicense("B");
@@ -48,6 +49,6 @@ public class Main {
         Driver kvyat = new Driver("Daniil Kvyat", "yEs", 15);
         kvyat.setDriversLicense(categoryB);
 
-        System.out.println(nefaz);
+        hyundai.printType();
     }
 }
